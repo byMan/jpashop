@@ -7,7 +7,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      #스프링 restart와 관계 없이 DB에 데이터를 남겨놓고 테스트를 진행할 경우, 즉 commit 발생
+      ddl-auto: none
+      #스프링 restart 되면 DB 데이터는 모두 롤백되어 초기화, 즉, 테스트 시에만 데이터 추가되었다가 모두 rollbak 처리됨 commit 하지 않음
+#      ddl-auto: create
     properties:
       hibernate:
 #        show_sql: true
