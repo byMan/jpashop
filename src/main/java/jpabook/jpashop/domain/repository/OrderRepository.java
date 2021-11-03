@@ -1,9 +1,8 @@
 package jpabook.jpashop.domain.repository;
 
 import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.domain.repository.order.simplequery.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -50,6 +49,7 @@ public class OrderRepository {
 
         //동적 쿼리 작성 예시1
         String jpql = "select o from Order o join o.member m";
+
         boolean isFirstCondition = true;
 
         //주문 상태 검색
@@ -117,4 +117,17 @@ public class OrderRepository {
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
         return query.getResultList();
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        //fetch 조인으로 LAZY로 설정되어 있더라도 한번에 일괄 조인하여 결과를 모두 리턴하게 만든다.
+        return em.createQuery(
+                "select o from Order o" +
+                        " left join fetch o.member m" +
+                        " left join fetch o.delivery d", Order.class)
+                .getResultList();
+
+    }
+
+
+
 }
