@@ -129,6 +129,19 @@ public class OrderRepository {
     }
 
 
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        //fetch 조인으로 LAZY로 설정되어 있더라도 한번에 일괄 조인하여 결과를 모두 리턴하게 만든다.
+        return em.createQuery(
+                        "select o from Order o" +
+                                " left join fetch o.member m" +
+                                " left join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
+    }
+
+
     public List<Order> findAllWithItem() {
         /*
             페치 조인으로 SQL이 1번만 실행됨

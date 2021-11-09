@@ -15,6 +15,11 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100
+    #OSIV 이 기능이 true 이면, 화면에 View 로딩이 완료되는 시점까지 DB 커넥션이 반환되지 않는다.
+    #만약, 이 기능이 false 이면, @Transactional 로 진행되는 부분의 작업이 종료됨과 동시에 DB 커넥션이 반환된다.
+    #DB 커넥션 반환 시점에 따라 JPA 영속성이 Controller 까지 적용 가능하냐 아니면 Service 와 Repository 까지만 적용되냐의 차이가 발생한다.
+    open-in-view: false
 
 logging:
   level:
